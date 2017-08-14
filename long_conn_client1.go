@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"net"
-	"time"
+	// "time"
 )
 
 var quitSemaphore = make(chan bool, 1)
@@ -27,6 +27,15 @@ func main() {
 func onMessageReceive(conn *net.TCPConn) {
 
 	reader := bufio.NewReader(conn)
+	go func() {
+		var msg string
+		for {
+			fmt.Println("please input contents...")
+			fmt.Scanln(&msg)
+			b := []byte(msg + "\n")
+			conn.Write(b)
+		}
+	}()
 	for {
 
 		message, err := reader.ReadString('\n')
@@ -38,11 +47,12 @@ func onMessageReceive(conn *net.TCPConn) {
 		// var msg string
 		// fmt.Println("please input msg...")
 		// fmt.Scanln(&msg)
-		msg := "客户端1测试。。。"
 
-		time.Sleep(time.Second)
-		b := []byte(msg + "\n")
-		conn.Write(b)
+		// msg := "客户端1测试。。。"
+
+		// time.Sleep(time.Second)
+		// b := []byte(msg + "\n")
+		// conn.Write(b)
 	}
 
 }
