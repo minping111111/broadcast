@@ -10,7 +10,7 @@ import (
 var quitSemaphore = make(chan bool, 1)
 
 func main() {
-	tcpAddr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:9999")
+	tcpAddr, _ := net.ResolveTCPAddr("tcp", "10.74.36.12:9999")
 
 	tcpConn, _ := net.DialTCP("tcp", nil, tcpAddr)
 	defer tcpConn.Close()
@@ -18,8 +18,8 @@ func main() {
 
 	go onMessageReceive(tcpConn)
 
-	b := []byte("time\n")
-	tcpConn.Write(b)
+	// b := []byte("time\n")
+	// tcpConn.Write(b)
 	<-quitSemaphore
 
 }
@@ -30,8 +30,10 @@ func onMessageReceive(conn *net.TCPConn) {
 	go func() {
 		var msg string
 		for {
-			fmt.Println("please input contents...")
-			fmt.Scanln(&msg)
+
+			// fmt.Scanln(&msg)
+			fmt.Print("我说：")
+			fmt.Scan(&msg)
 			b := []byte(msg + "\n")
 			conn.Write(b)
 		}
@@ -43,7 +45,8 @@ func onMessageReceive(conn *net.TCPConn) {
 			break
 			quitSemaphore <- true
 		}
-		fmt.Println(message)
+		fmt.Println("                                               " + "她说：" + message)
+		// fmt.Println(message)
 		// var msg string
 		// fmt.Println("please input msg...")
 		// fmt.Scanln(&msg)
